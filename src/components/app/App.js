@@ -15,7 +15,6 @@ class App extends Component {
       selectedMessages: new Set(),
       isComposing: false,
   }
-    this.API = `${process.env.REACT_APP_API_URL}/messages`
     // The following is loaded in componentDidMount
     // messages: [ {
     //  {
@@ -56,7 +55,7 @@ class App extends Component {
       body: post.body
     }
 
-    const response = await fetch(this.API, {
+    const response = await fetch('http://localhost:8082/api/messages', {
       method: 'POST',
       body: JSON.stringify(body),
       headers: {
@@ -117,7 +116,7 @@ class App extends Component {
         {this.state.compose ? <Compose openComposeMessage={this.openComposeMessage} composeMessage={this.composeMessage} /> : null}
         <MessageList
           messages={messages}
-          toggleFavorite={this.toggleFavorite}
+          toggleFavoriteCB={this.toggleFavorite}
         />
       </div>
     )

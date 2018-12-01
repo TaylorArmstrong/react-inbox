@@ -1,5 +1,5 @@
 
-const API = `${process.env.REACT_APP_API_URL}/messages`
+// const API = `${process.env.REACT_APP_API_URL}/messages`
 /*
 
 API Call To Get Current Message State From Database
@@ -7,7 +7,7 @@ API Call To Get Current Message State From Database
 */
 async function asyncLoadMessages() {
     // console.log('Model::loadMessages()')
-    const response = await fetch(API)
+    const response = await fetch('http://localhost:8082/api/messages')
     const json = await response.json()
     return json
 }
@@ -23,7 +23,7 @@ async function asyncToggleFavorite(id) {
         messageIds: [id],
         command: 'star',
     }
-    const response = await fetch(API, {
+    const response = await fetch('http://localhost:8082/api/messages', {
         method: 'PATCH',
         body: JSON.stringify(body),
         headers: {
@@ -38,5 +38,4 @@ async function asyncToggleFavorite(id) {
 export default {
     asyncLoadMessages,
     asyncToggleFavorite,
-    API
 }

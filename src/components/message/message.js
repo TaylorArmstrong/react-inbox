@@ -16,10 +16,10 @@ export default class Message extends React.Component {
 
     */
     onStar = () => {
-        const { toggleFavorite, message } = this.props
+        const { toggleFavoriteCB, message } = this.props
         const { id } = message
         console.log('toggleFavorite id', `${id}`)
-        toggleFavorite(id)
+        toggleFavoriteCB(id)
     }
 
     /* 
@@ -46,7 +46,7 @@ export default class Message extends React.Component {
                                 <input type="checkbox" checked={selected} onChange={this.onchangeSelected} />
                             </div>
                             <div className="col-xs-2">
-                                <i className={`${((starred) ? 'fas fa-star' : 'far fa-star')}`} onClick={this.onStar} />
+                                <i className={`star fa ${((starred) ? 'fa-star' : 'fa-star-o')}`} onClick={this.onStar} />
                             </div>
                         </div>
                     </div>
