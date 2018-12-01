@@ -15,6 +15,7 @@ class App extends Component {
       selectedMessages: new Set(),
       isComposing: false,
   }
+    this.API = `${process.env.REACT_APP_API_URL}/messages`
     // The following is loaded in componentDidMount
     // messages: [ {
     //  {
@@ -55,7 +56,7 @@ class App extends Component {
       body: post.body
     }
 
-    const response = await fetch('http://localhost:8082/api/messages', {
+    const response = await fetch(this.API, {
       method: 'POST',
       body: JSON.stringify(body),
       headers: {
