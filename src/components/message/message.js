@@ -1,34 +1,49 @@
 import React from 'react'
 import Labels from '../labels/labels'
 
-
 export default class Message extends React.Component {
 
     constructor(props) {
         super(props)
         this.state = {
-            isExpanded: false,
+          isSelected: false,
         }
     }
 
-    onStar = (ev) => {
-        this.props.toggleFavorite(ev.target.id)
+    /*
+
+    onStar
+
+    */
+    onStar = () => {
+        const { toggleFavorite, message } = this.props
+        const { id } = message
+        console.log('toggleFavorite id', `${id}`)
+        toggleFavorite(id)
     }
-   
+
+    /* 
+    
+    onchangeSelected
+
+    */
+    onchangeSelected = () => {
+        const { toggleSelected, message } = this.props
+        const { id } = message
+        toggleSelected(id)
+    }
 
     render() {
+        const { message, selected } = this.props
+        const { body, id, labels, read, starred, subject} = message
 
-        const { message } = this.props
-        const { body, id, labels, read, starred, subject } = message
-        const selected = false
-        
         return (
             <div>
                 <div className={`row message ${(read ? 'read' : 'unread')} ${(selected ? 'selected' : '')}`}>
                     <div className="col-xs-1">
                         <div className="row">
                             <div className="col-xs-2">
-                                <input type="checkbox" checked={selected}/>
+                                <input type="checkbox" checked={selected} onChange={this.onchangeSelected} />
                             </div>
                             <div className="col-xs-2">
                                 <i className={`${((starred) ? 'fas fa-star' : 'far fa-star')}`} onClick={this.onStar} />
@@ -37,7 +52,7 @@ export default class Message extends React.Component {
                     </div>
                     <div className="col-xs-11">
                         <Labels labels={labels} />
-                        <a href="!#">{subject} </a>
+                        <a href="!#">{subject}</a>
                     </div>
                 </div>
             </div>

@@ -2,27 +2,42 @@ import React, { Component } from 'react'
 import MessageList from '../message-list/message-list'
 import Toolbar from '../toolbar/toolbar'
 import Compose from '../compose/compose'
+import template from '../template/template'
 
 import './App.css'
 
 
 class App extends Component {
 
-  constructor() {
+  constructor(){
     super()
     this.state = {
-    }
-    this.API = `${process.env.REACT_APP_API_URL}/messages`
+      selectedMessages: new Set(),
+      isComposing: false,
   }
+    this.API = `${process.env.REACT_APP_API_URL}/messages`
+    // The following is loaded in componentDidMount
+    // messages: [ {
+    //  {
+    //     "body": "random text",
+    //     "id": num,
+    //     "labels": [],
+    //     "read": true,
+    //     "starred": true,
+    //     "subject": "random text"
+    //  },
+    //  {...} ]
+  }
+  
 
-  /*
-
-  Load Books
+  /* 
+  
+  load the current state of the books 
 
   */
-
   async componentDidMount() {
-    await this.loadCurrentMessages()
+    // console.log('App:componentDidMount()')
+    this.loadMessages()
   }
 
   /*
@@ -35,7 +50,7 @@ class App extends Component {
   }
 
   composeMessage = async (post) => {
-    console.log('compose message', post.subject, post.body)
+    // console.log('compose message', post.subject, post.body)
     let body = {
       subject: post.subject,
       body: post.body
@@ -50,93 +65,66 @@ class App extends Component {
       },
     })
     console.log('POST response', response)
-    this.loadCurrentMessages()
+    this.loadMessages()
   }
 
   /* 
-
-  Toggle Star State of Single Message
+  
+  toggle starred state
 
   */
-
   toggleFavorite = async (id) => {
-    console.log(`app.js: toggleFavorite(${id})`)
-    let body = {
-      messageIds: [id],
-      command: 'star',
+    // console.log(`App:toggleFavorite(${id})`)
+    await template.asyncToggleFavorite(id)
+    this.loadMessages()
+  }
+
+ /*
+  
+  Update State Of Messages
+
+  */
+  async loadMessages() {
+    console.log('App:loadMessages()')
+    let messages = []
+    try {
+      messages = await template.asyncLoadMessages()
+    } catch (err) {
+      console.log('ERROR loadMessages(): ', err)
+      messages = [
+        {
+          body: 'no body',
+          id: 0,
+          labels: [],
+          read: true,
+          starred: true,
+          subject: 'ERROR: backend db server needs to be started: collective-api application',
+        },
+      ]
     }
-    const response = await fetch(this.API, {
-      method: 'PATCH',
-      body: JSON.stringify(body),
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      }
-    })
-    const resJSON = await response.json()
     this.setState({
-      ...this.state,
-      messages: resJSON
+      messages,
     })
-    this.loadCurrentMessages()
   }
-
-  // toggleFavorite = async id => {
-  //   console.log(`app.js: toggleFavorite(${id})`)
-  //   const response = await fetch(this.API, {
-  //     method: 'PATCH',
-  //     body: JSON.stringify({
-  //       messageIds: [id],
-  //       command: 'star'
-  //     }),
-  //     headers: {
-  //       'Content-Type': 'application/json'
-  //     }
-  //   })
-  //   const responseJSON = await response.json()
-  //   console.log('response', response)
-  //   this.setState({
-  //     ...this.state,
-  //     messages: responseJSON
-  //   })
-  // }
-
-
-  /*
- 
- API Call To Get Current Message State From Database
-
- */
-  loadCurrentMessages = async () => {
-    const response = await fetch(this.API)
-    if (response.status === 200) {
-      let resJson = await response.json()
-      resJson.forEach(message => message.selected = false)
-      console.log('resJson', resJson)
-      this.setState({
-        ...this.state,
-        messages: resJson
-      })
-    } else {
-      console.log('GET request failed', response)
-      throw new Error('GET request failed')
-    }
-  }
-
 
   render() {
     const { messages } = this.state
     return (
-      <div className="App">
+      <div className="container App">
         <Toolbar 
           openComposeMessage={this.openComposeMessage.bind(this)}
         />
-        {this.state.compose ? <Compose openComposeMessage={this.openComposeMessage} composeMessage={this.composeMessage} /> : <div/>}
-        <MessageList messages={messages} toggleFavorite={this.toggleFavorite}/>
+        {this.state.compose ? <Compose openComposeMessage={this.openComposeMessage} composeMessage={this.composeMessage} /> : null}
+        <MessageList
+          messages={messages}
+          toggleFavorite={this.toggleFavorite}
+        />
       </div>
     )
   }
 }
 
 export default App
+
+
 

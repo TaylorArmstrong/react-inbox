@@ -4,12 +4,23 @@ export default class Compose extends React.Component {
 
     composeMessage = (ev) => {
         ev.preventDefault()
-        console.log('ev', ev)
+        // console.log('ev', ev)
         const post = {
             subject: ev.target[0].value,
             body: ev.target[1].value
         }
         this.props.composeMessage(post)
+    }
+
+    onSubmit = (e) => {
+        console.log('Compose::onSubmit()')
+        e.preventDefault()
+
+        const { subject, body } = this.state
+        this.setState({ subject: '', body: '' })
+
+        const { sendMessage } = this.props
+        sendMessage(subject, body)
     }
 
     render() {
