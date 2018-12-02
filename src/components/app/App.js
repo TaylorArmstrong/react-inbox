@@ -12,15 +12,15 @@ class App extends Component {
   constructor(){
     super()
     this.state = {
+      messages: [],
       selectedMessages: new Set(),
   }
     this.API = `${process.env.REACT_APP_API_URL}/messages`
   }
   
-
   /* 
   
-  load the current state of the books 
+  Load The Current State Of The Messages 
 
   */
   async componentDidMount() {
@@ -59,6 +59,27 @@ class App extends Component {
   closeComposeMessage = () => {
     this.setState({ compose: null })
   }
+
+  /*
+
+  Select All/Unselect All Toolbar-Button Handling
+
+  */
+ toggleSelectAll = () => {
+   this.setState((state) => {
+     const { selectedMessages, messages } = state
+
+     if(selectedMessages.size) {
+       selectedMessages.clear()
+     } else {
+        messages.forEach(message => selectedMessages.add(message.id))
+     }
+     return {
+       selectedMessages
+     }
+   })
+ }
+
 
   /* 
   
@@ -133,7 +154,7 @@ class App extends Component {
 
   /* 
   
-  Toggle Starred/Favorite State of Single Message
+  Toggle Starred/Favorite State Of Single Message
 
   */
   toggleFavorite = async (id) => {
@@ -145,7 +166,7 @@ class App extends Component {
 
   /* 
    
-    Called when selcted checkbox is toggled
+    Toggle Selct Checkbox Of Single Message
 
     */
   toggleSelected = (id) => {
@@ -194,20 +215,25 @@ class App extends Component {
   }
 
   render() {
+
     const { messages, selectedMessages } = this.state
-    console.log('selectedMessages: app.js', selectedMessages)
+
     let unreadCounter = 0
+
     if (messages) {
       unreadCounter = messages.reduce((a, b) => {
         const numberOfUnread = a + ((!b.read) ? 1 : 0)
         return numberOfUnread
       }, 0)
     }
+
+
     return (
       <div className="container App">
         <Toolbar 
           messages={messages}
           openComposeMessage={this.openComposeMessage.bind(this)}
+          toggleSelectAll={this.toggleSelectAll}
           selectedMessages={selectedMessages}
           unreadCounter={unreadCounter}
           allReadToolbar={this.allReadToolbar}
@@ -217,7 +243,9 @@ class App extends Component {
           deleteMessagesToolbar={this.deleteMessagesToolbar}
 
         />
+
         {this.state.compose ? <Compose openComposeMessage={this.openComposeMessage} composeMessage={this.composeMessage} closeComposeMessage={this.closeComposeMessage} /> : null}
+        
         <MessageList
           messages={messages}
           selectedMessages={selectedMessages}

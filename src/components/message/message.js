@@ -2,14 +2,6 @@ import React from 'react'
 import Labels from '../labels/labels'
 
 export default class Message extends React.Component {
-
-    // constructor(props) {
-    //     super(props)
-    //     this.state = {
-          
-    //     }
-    // }
-
     /*
 
     onStar

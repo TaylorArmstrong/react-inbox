@@ -9,7 +9,7 @@ const Label = ({ label }) => {
 const Labels = ({ labels }) => {
     return (
         <span>
-            {labels.map(label => <Label label={label} />)}
+            {labels.map(label => <Label key={label} label={label} />)}
         </span>
     )
 }

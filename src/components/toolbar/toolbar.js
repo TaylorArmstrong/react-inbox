@@ -2,14 +2,13 @@ import React, { Component } from 'react'
 
 
 class Toolbar extends Component {
-    // constructor (props) {
-    //     super(props)
-    //     this.state ={
-    //         ...this.state,
-    //     }
-    // } 
+
     openCompose = (ev) => {
         this.props.openComposeMessage()
+    }
+
+    selectAll = () => {
+        this.props.toggleSelectAll()
     }
 
     addLabelToSelected = (ev) => {
@@ -34,29 +33,21 @@ class Toolbar extends Component {
 
     deleteMessages = (ev) => this.props.deleteMessagesToolbar()
     
-
-    // selectAll = () => this.props.selectAllToolbar()
     markAsRead = () => this.props.allReadToolbar()
     markAsUnread = (ev) => this.props.allUnreadToolbar()
 
-    
-    // selectedCount = this.props.messages.filter(message => message.selected).length
 
     render() {
         
         const { selectedMessages, unreadCounter, messages } = this.props
         
-        console.log('selecteMessages: toolbar', selectedMessages)
-        console.log('selecteMessages size: toolbar', selectedMessages.size)
-        console.log('messages', messages)
-        let selectAllButtonDisplay = null
+        let selectAllButtonDisplay 
         if (selectedMessages.size === 0) { 
-            selectAllButtonDisplay = 'far fa-square'
+            selectAllButtonDisplay = 'fa fa-square-o'
         } else if (selectedMessages.size === messages.length) {
-            selectAllButtonDisplay = 'far fa-check-square'
+            selectAllButtonDisplay = 'fa fa-check-square-o'
         } else {
-            selectAllButtonDisplay = 'far fa-minus-square'
-
+            selectAllButtonDisplay = 'fa fa-minus-square-o'
         }
 
         return (
@@ -69,7 +60,7 @@ class Toolbar extends Component {
                     <button className="btn btn-danger" onClick={this.openCompose}>
                         <i className="fa fa-plus" />
                     </button>
-                    <button className="btn btn-default" >
+                    <button className="btn btn-default" onClick={this.selectAll}>
                         <i className={selectAllButtonDisplay}></i>
                     </button>
                     <button className="btn btn-default" onClick={this.markAsRead}>
