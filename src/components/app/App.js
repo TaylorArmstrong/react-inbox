@@ -74,6 +74,25 @@ class App extends Component {
 
   /* 
   
+  Mark Messages Read Toobar Toolbar-Button Handling
+
+  */
+  allReadToolbar = async () => {
+    await this.updateMessages({
+      "messageIds": this.state.messages.filter(message => message.selected).map(message => message.id),
+      "command": "read",
+      "read": true
+    })
+
+    this.setState({
+      messages: this.state.messages.map(message => (
+        message.selected ? { ...message, read: true } : message
+      ))
+    })
+  }
+
+  /* 
+  
   toggle starred state
 
   */
@@ -83,6 +102,28 @@ class App extends Component {
     this.loadMessages()
   }
 
+
+  /* 
+   
+    Called when selcted checkbox is toggled
+
+    */
+  toggleSelected = (id) => {
+    this.setState((state) => {
+
+      // toggle the selection
+      const { selectedMessages } = state
+      if (selectedMessages.has(id)) selectedMessages.delete(id)
+      else selectedMessages.add(id)
+
+      // update state
+      return {
+        selectedMessages,
+      }
+    })
+  }
+
+  
  /*
   
   Update State Of Messages
@@ -112,16 +153,28 @@ class App extends Component {
   }
 
   render() {
-    const { messages } = this.state
+    const { messages, selectedMessages } = this.state
+
+    let unreadCounter = 0
+    if (messages) {
+      unreadCounter = messages.reduce((a, b) => {
+        const numberOfUnread = a + ((!b.read) ? 1 : 0)
+        return numberOfUnread
+      }, 0)
+    }
     return (
       <div className="container App">
         <Toolbar 
           openComposeMessage={this.openComposeMessage.bind(this)}
+          selectedMessages={selectedMessages}
+          unreadCounter={unreadCounter}
         />
         {this.state.compose ? <Compose openComposeMessage={this.openComposeMessage} composeMessage={this.composeMessage} closeComposeMessage={this.closeComposeMessage} /> : null}
         <MessageList
           messages={messages}
-          toggleFavoriteCB={this.toggleFavorite}
+          selectedMessages={selectedMessages}
+          toggleFavorite={this.toggleFavorite}
+          toggleSelected={this.toggleSelected}
         />
       </div>
     )

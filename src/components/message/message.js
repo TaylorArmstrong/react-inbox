@@ -6,7 +6,7 @@ export default class Message extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-          isSelected: false,
+          
         }
     }
 
@@ -16,10 +16,10 @@ export default class Message extends React.Component {
 
     */
     onStar = () => {
-        const { toggleFavoriteCB, message } = this.props
+        const { toggleFavorite, message } = this.props
         const { id } = message
         console.log('toggleFavorite id', `${id}`)
-        toggleFavoriteCB(id)
+        toggleFavorite(id)
     }
 
     /* 
@@ -27,7 +27,7 @@ export default class Message extends React.Component {
     onchangeSelected
 
     */
-    onchangeSelected = () => {
+    onCheckboxSelect = () => {
         const { toggleSelected, message } = this.props
         const { id } = message
         toggleSelected(id)
@@ -43,7 +43,7 @@ export default class Message extends React.Component {
                     <div className="col-xs-1">
                         <div className="row">
                             <div className="col-xs-2">
-                                <input type="checkbox" checked={selected} onChange={this.onchangeSelected} />
+                                <input type="checkbox" checked={selected} onChange={this.onCheckboxSelect} />
                             </div>
                             <div className="col-xs-2">
                                 <i className={`star fa ${((starred) ? 'fa-star' : 'fa-star-o')}`} onClick={this.onStar} />

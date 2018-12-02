@@ -25,12 +25,14 @@ class Toolbar extends Component {
     // selectedCount = this.props.messages.filter(message => message.selected).length
 
     render() {
+
+        const { selecteMessages, unreadCounter } = this.props
         return (
             <div className="row toolbar">
                 <div className="col-md-12">
                     <p className="pull-right">
-                        <span className="badge badge"></span>
-                        unread messages
+                        <span className="badge badge">{unreadCounter}</span>
+                        unread message{(unreadCounter === 1) ? '' : 's'}
                     </p>
                     <button className="btn btn-danger" onClick={this.openCompose}>
                         <i className="fa fa-plus" />

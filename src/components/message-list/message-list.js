@@ -15,30 +15,9 @@ export default class Messages extends React.Component {
     }
 
 
-    /* 
-   
-    Called when selcted checkbox is toggled
-
-    */
-    toggleSelected = (id) => {
-        console.log('toggleSelected id',`${id}`)
-        this.setState((prevState) => {
-            const newState = { ...prevState }
-            if (newState.setSelectedMessages.has(id)) {
-                newState.setSelectedMessages.delete(id)
-            } else {
-                newState.setSelectedMessages.add(id)
-            }
-
-            return {
-                newState,
-            }
-        })
-    }
-
     render() {
         // console.log('Messages::render()')
-        const { messages, toggleFavoriteCB } = this.props
+        const { messages, toggleFavorite, toggleSelected, selectedMessages } = this.props
 
         if (!messages) {
             return (
@@ -54,9 +33,9 @@ export default class Messages extends React.Component {
                     <Message
                         key={message.id}
                         message={message}
-                        selected={this.state.setSelectedMessages.has(message.id)}
-                        toggleSelected={this.toggleSelected}
-                        toggleFavoriteCB={toggleFavoriteCB}
+                        selected={selectedMessages.has(message.id)}
+                        toggleSelected={toggleSelected}
+                        toggleFavorite={toggleFavorite}
                     />))}
             </div>
         )
