@@ -2,24 +2,6 @@ import React from 'react'
 
 export default class Compose extends React.Component {
 
-    // constructor(props) {
-    //     super(props)
-    // }
-
-    // state = {
-    //     subject: '',
-    //     body: ''
-    // }
-
-    // onChange = () => {
-    //     this.setState(
-    //         {
-    //             subject: document.forms.composeMessageForm.subject.value,
-    //             body: document.forms.composeMessageForm.body.value
-    //         }
-    //     )
-    // }
-
     composeMessage = (ev) => {
         ev.preventDefault()
         // console.log('ev', ev)
@@ -28,29 +10,10 @@ export default class Compose extends React.Component {
             body: ev.target[1].value
         }
         this.props.composeMessage(post)
-    }
-
-    onSubmit = (e) => {
-        console.log('Compose::onSubmit()')
-        e.preventDefault()
-
-        const { subject, body } = this.state
-        this.setState({ subject: '', body: '' })
-
-        const { sendMessage } = this.props
-        sendMessage(subject, body)
+        this.props.closeComposeMessage()
     }
 
     render() {
-        // const { subject, body } = this.state
-        // const { isComposing } = this.props
-
-        // if (!isComposing) {
-        //     return (
-        //         <span />
-        //     )
-        // }
-
         return (
             <div>
                 <form id='composeMessageForm' className="form-horizontal well" onSubmit={this.composeMessage}>

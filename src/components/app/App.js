@@ -68,6 +68,10 @@ class App extends Component {
     this.loadMessages()
   }
 
+  closeComposeMessage = () => {
+    this.setState({ compose: null })
+  }
+
   /* 
   
   toggle starred state
@@ -114,7 +118,7 @@ class App extends Component {
         <Toolbar 
           openComposeMessage={this.openComposeMessage.bind(this)}
         />
-        {this.state.compose ? <Compose openComposeMessage={this.openComposeMessage} composeMessage={this.composeMessage} /> : null}
+        {this.state.compose ? <Compose openComposeMessage={this.openComposeMessage} composeMessage={this.composeMessage} closeComposeMessage={this.closeComposeMessage} /> : null}
         <MessageList
           messages={messages}
           toggleFavoriteCB={this.toggleFavorite}
