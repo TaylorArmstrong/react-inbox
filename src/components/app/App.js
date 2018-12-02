@@ -62,26 +62,31 @@ class App extends Component {
 
   /* 
   
-  Mark Messages Read Toobar Toolbar-Button Handling
+  Mark Selected Messages Read Toolbar-Button Handling
 
   */
   allReadToolbar = async () => {
-    await this.updateMessages({
-      "messageIds": this.state.messages.filter(message => message.selected).map(message => message.id),
-      "command": "read",
-      "read": true
-    })
-
-    this.setState({
-      messages: this.state.messages.map(message => (
-        message.selected ? { ...message, read: true } : message
-      ))
-    })
+    const { selectedMessages } = this.state
+    const selectedIDs = [...selectedMessages]
+    await template.asyncMarkMessagesRead(selectedIDs)
+    this.loadMessages()
   }
 
   /* 
   
-  toggle starred state
+  Mark Selected Messages Unread Toolbar-Button Handling
+
+  */
+  allUnreadToolbar = async () => {
+    const { selectedMessages } = this.state
+    const selectedIDs = [...selectedMessages]
+    await template.asyncMarkMessagesUnread(selectedIDs)
+    this.loadMessages()
+  }
+
+  /* 
+  
+  Toggle Starred/Favorite State of Single Message
 
   */
   toggleFavorite = async (id) => {
@@ -154,9 +159,12 @@ class App extends Component {
     return (
       <div className="container App">
         <Toolbar 
+          messages={messages}
           openComposeMessage={this.openComposeMessage.bind(this)}
           selectedMessages={selectedMessages}
           unreadCounter={unreadCounter}
+          allReadToolbar={this.allReadToolbar}
+          allUnreadToolbar={this.allUnreadToolbar}
         />
         {this.state.compose ? <Compose openComposeMessage={this.openComposeMessage} composeMessage={this.composeMessage} closeComposeMessage={this.closeComposeMessage} /> : null}
         <MessageList

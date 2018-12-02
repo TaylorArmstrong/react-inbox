@@ -23,21 +23,23 @@ class Toolbar extends Component {
     // }
 
     // selectAll = () => this.props.selectAllToolbar()
-    // markAsRead = (ev) => this.props.allReadToolbar()
-    // markAsUnread = (ev) => this.props.allUnreadToolbar()
+    markAsRead = () => this.props.allReadToolbar()
+    markAsUnread = (ev) => this.props.allUnreadToolbar()
 
     
     // selectedCount = this.props.messages.filter(message => message.selected).length
 
     render() {
         
-        const { selectedMessages, unreadCounter, totalMessages } = this.props
+        const { selectedMessages, unreadCounter, messages } = this.props
         
         console.log('selecteMessages: toolbar', selectedMessages)
+        console.log('selecteMessages size: toolbar', selectedMessages.size)
+        console.log('messages', messages)
         let selectAllButtonDisplay = null
-        if (!selectedMessages.size) { 
+        if (selectedMessages.size === 0) { 
             selectAllButtonDisplay = 'far fa-square'
-        } else if (selectedMessages.size === totalMessages) {
+        } else if (selectedMessages.size === messages.length) {
             selectAllButtonDisplay = 'far fa-check-square'
         } else {
             selectAllButtonDisplay = 'far fa-minus-square'
@@ -57,10 +59,10 @@ class Toolbar extends Component {
                     <button className="btn btn-default" >
                         <i className={selectAllButtonDisplay}></i>
                     </button>
-                    <button className="btn btn-default" >
+                    <button className="btn btn-default" onClick={this.markAsRead}>
                         Mark As Read
                     </button>
-                    <button className="btn btn-default" >
+                    <button className="btn btn-default" onClick={this.markAsUnread}>
                         Mark As Unread
                      </button>
                     <select className="form-control label-select" >
