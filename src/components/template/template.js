@@ -70,6 +70,53 @@ async function asyncMarkMessagesUnread(selectedIDs) {
 
 /*
 
+Add Label To Selected Messages Toolbar-Button Handling
+
+*/
+async function asyncAddLabelToSelected(LabelID, selectedIDs) {
+    const body = {
+        messageIds: selectedIDs,
+        command: 'addLabel',
+        label: LabelID
+    }
+    const response = await fetch(API, {
+        method: 'PATCH',
+        body: JSON.stringify(body),
+        headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+        }
+    })
+    const resJSON = await response.json()
+    return resJSON
+}
+
+/*
+
+Remove Label From Selected Messages Toolbar-Button Handling
+
+*/
+async function asyncRemoveLabelFromSelected(LabelID, selectedIDs) {
+    const body = {
+        messageIds: selectedIDs,
+        command: 'removeLabel',
+        label: LabelID
+    }
+    const response = await fetch(API, {
+        method: 'PATCH',
+        body: JSON.stringify(body),
+        headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+        }
+    })
+    const resJSON = await response.json()
+    return resJSON
+}
+
+
+/*
+
 Delete Selected Messages Toolbar-Button Handling
 
 */
@@ -97,5 +144,7 @@ export default {
     API, 
     asyncMarkMessagesRead,
     asyncMarkMessagesUnread,
+    asyncAddLabelToSelected,
+    asyncRemoveLabelFromSelected,
     asyncDeleteSelectedMessages
 }

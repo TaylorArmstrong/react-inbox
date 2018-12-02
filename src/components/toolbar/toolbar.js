@@ -12,15 +12,25 @@ class Toolbar extends Component {
         this.props.openComposeMessage()
     }
 
-    // addLabelToSelected = (ev) => {
-    //     let label = ev.target.value
-    //     this.props.addLabel(label)
-    // }
+    addLabelToSelected = (ev) => {
+        const { addLabelToolbar } = this.props
+        const idx = ev.target.selectedIndex
+        
+        if (idx === 0) return
 
-    // removeLabelFromSelected = (ev) => {
-    //     let label = ev.target.value
-    //     this.props.removeLabel(label)
-    // }
+        addLabelToolbar(ev.target.options[idx].text)
+        ev.target.selectedIndex = 0
+    }
+
+    removeLabelFromSelected = (ev) => {
+        const {removeLabelToolbar } = this.props
+        const idx = ev.target.selectedIndex
+
+        if (idx === 0) return
+       
+        removeLabelToolbar(ev.target.options[idx].text)
+        ev.target.selectedIndex = 0
+    }
 
     deleteMessages = (ev) => this.props.deleteMessagesToolbar()
     
@@ -68,13 +78,13 @@ class Toolbar extends Component {
                     <button className="btn btn-default" onClick={this.markAsUnread}>
                         Mark As Unread
                      </button>
-                    <select className="form-control label-select" >
+                    <select className="form-control label-select" onChange={this.addLabelToSelected}>
                         <option>Apply label</option>
                         <option value="dev">dev</option>
                         <option value="personal">personal</option>
                         <option value="gschool">gschool</option>
                     </select>
-                    <select className="form-control label-select" >
+                    <select className="form-control label-select" onChange={this.removeLabelFromSelected}>
                         <option>Remove label</option>
                         <option value="dev">dev</option>
                         <option value="personal">personal</option>

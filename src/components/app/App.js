@@ -86,6 +86,30 @@ class App extends Component {
 
   /*
 
+  Apply Label to Selected Messages Toolbar-Button Handling
+
+  */
+  addLabelToolbar = async (LabelID) => {
+    const { selectedMessages } = this.state
+    const selectedIDs = [...selectedMessages]
+    await template.asyncAddLabelToSelected(LabelID, selectedIDs)
+    this.loadMessages()
+  }
+
+  /*
+
+  Apply Label to Selected Messages Toolbar-Button Handling
+
+  */
+  removeLabelToolbar = async (LabelID) => {
+    const { selectedMessages } = this.state
+    const selectedIDs = [...selectedMessages]
+    await template.asyncRemoveLabelFromSelected(LabelID, selectedIDs)
+    this.loadMessages()
+  }
+
+  /*
+
   Delete Selected Messages Toolbar-Button Handling
 
   */
@@ -188,6 +212,8 @@ class App extends Component {
           unreadCounter={unreadCounter}
           allReadToolbar={this.allReadToolbar}
           allUnreadToolbar={this.allUnreadToolbar}
+          addLabelToolbar={this.addLabelToolbar}
+          removeLabelToolbar={this.removeLabelToolbar}
           deleteMessagesToolbar={this.deleteMessagesToolbar}
 
         />

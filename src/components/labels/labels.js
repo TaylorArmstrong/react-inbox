@@ -7,7 +7,6 @@ const Label = ({ label }) => {
 }
 
 const Labels = ({ labels }) => {
-    // console.log('** Labels::render()')
     return (
         <span>
             {labels.map(label => <Label label={label} />)}
