@@ -12,7 +12,7 @@ class App extends Component {
   constructor(){
     super()
     this.state = {
-      messages: [],
+      
       selectedMessages: new Set(),
   }
     this.API = `${process.env.REACT_APP_API_URL}/messages`
@@ -52,7 +52,8 @@ class App extends Component {
         Accept: 'application/json'
       },
     })
-    console.log('POST response', response)
+    // console.log('POST response', response)
+
     this.loadMessages()
   }
 
@@ -185,6 +186,17 @@ class App extends Component {
     })
   }
 
+  /*
+
+  Toggle Single Message Read
+
+  */
+ readMessage = async (id) => {
+   const selectedIDs = [id]
+   await template.asyncMarkMessagesRead(selectedIDs)
+   this.loadMessages()
+ }
+
   
  /*
   
@@ -251,6 +263,7 @@ class App extends Component {
           selectedMessages={selectedMessages}
           toggleFavorite={this.toggleFavorite}
           toggleSelected={this.toggleSelected}
+          readMessage={this.readMessage}
         />
       </div>
     )

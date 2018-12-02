@@ -1,7 +1,27 @@
 import React from 'react'
 import Labels from '../labels/labels'
 
+/*
+
+    Message Body
+
+*/
+const MessageBody = ({ body }) => {
+    return (
+        <div className='row message-body'>
+            <div className='col-xs-11 xol-xs-offset-1'>
+                {body}
+            </div>
+        </div>
+    )
+}
+
 export default class Message extends React.Component {
+    
+    state = {
+        isExpanded: false
+    }
+
     /*
 
     onStar
@@ -10,7 +30,7 @@ export default class Message extends React.Component {
     onStar = () => {
         const { toggleFavorite, message } = this.props
         const { id } = message
-        console.log('toggleFavorite id', `${id}`)
+        // console.log('toggleFavorite id', `${id}`)
         toggleFavorite(id)
     }
 
@@ -25,9 +45,29 @@ export default class Message extends React.Component {
         toggleSelected(id)
     }
 
+    /*
+
+    onRead
+
+    */
+   onRead = () => {
+       const { isExpanded } = this.state
+       const { message } = this.props
+       const { read } = message
+
+       if(!isExpanded && !read) {
+           const { readMessage, message } = this.props
+           const { id } = message
+           readMessage(id)
+       } 
+       this.setState({ isExpanded: !isExpanded })
+   }
+
+
     render() {
         const { message, selected } = this.props
-        const { body, id, labels, read, starred, subject} = message
+        const { id, body, labels, read, starred, subject} = message
+        const { isExpanded } = this.state
 
         return (
             <div>
@@ -44,9 +84,10 @@ export default class Message extends React.Component {
                     </div>
                     <div className="col-xs-11">
                         <Labels labels={labels} />
-                        <a href="!#">{subject}</a>
+                        <a href="!#" onClick={this.onRead}>{subject}</a>
                     </div>
                 </div>
+                {isExpanded ? (<MessageBody body={body} />) : ('')}
             </div>
         )
     }

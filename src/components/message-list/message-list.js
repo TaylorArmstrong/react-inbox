@@ -3,7 +3,9 @@ import Message from '../message/message'
 
 
 export default class Messages extends React.Component {
-
+    constructor(props) {
+        super(props)
+    }
    
 
 
