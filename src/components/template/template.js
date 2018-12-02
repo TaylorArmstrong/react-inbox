@@ -35,7 +35,6 @@ async function asyncToggleFavorite(id) {
     return json
 }
 
-
 /* 
 
 Toggle Read/Unread on Selected Messages
@@ -60,21 +59,43 @@ async function asyncToggleRead(selectedIDs, toggleRead) {
 }
 
 // Toggle Read
-
 async function asyncMarkMessagesRead(selectedIDs) {
     return asyncToggleRead(selectedIDs, true)
 }
 
 // Toggle Unread
-
 async function asyncMarkMessagesUnread(selectedIDs) {
     return asyncToggleRead(selectedIDs, false)
 }
+
+/*
+
+Delete Selected Messages Toolbar-Button Handling
+
+*/
+async function asyncDeleteSelectedMessages(selectedIDs) {
+    const body = {
+        messageIds: selectedIDs,
+        command: 'delete'
+    }
+    const response = await fetch(API, {
+        method: 'PATCH',
+        body: JSON.stringify(body),
+        headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+        }
+    })
+    const resJSON = await response.json()
+    return resJSON
+} 
+
 
 export default {
     asyncLoadMessages,
     asyncToggleFavorite,
     API, 
     asyncMarkMessagesRead,
-    asyncMarkMessagesUnread
+    asyncMarkMessagesUnread,
+    asyncDeleteSelectedMessages
 }

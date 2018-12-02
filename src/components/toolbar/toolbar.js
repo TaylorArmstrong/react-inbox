@@ -22,6 +22,9 @@ class Toolbar extends Component {
     //     this.props.removeLabel(label)
     // }
 
+    deleteMessages = (ev) => this.props.deleteMessagesToolbar()
+    
+
     // selectAll = () => this.props.selectAllToolbar()
     markAsRead = () => this.props.allReadToolbar()
     markAsUnread = (ev) => this.props.allUnreadToolbar()
@@ -77,7 +80,7 @@ class Toolbar extends Component {
                         <option value="personal">personal</option>
                         <option value="gschool">gschool</option>
                     </select>
-                    <button className="btn btn-default">
+                    <button className="btn btn-default" onClick={this.deleteMessages}>
                         <i className="fa fa-trash-o"></i>
                     </button>
                 </div>

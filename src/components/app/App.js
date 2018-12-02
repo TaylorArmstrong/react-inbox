@@ -84,6 +84,29 @@ class App extends Component {
     this.loadMessages()
   }
 
+  /*
+
+  Delete Selected Messages Toolbar-Button Handling
+
+  */
+  deleteMessagesToolbar = async () => {
+    const { selectedMessages } = this.state
+    const selectedIDs = [...selectedMessages]
+    await template.asyncDeleteSelectedMessages(selectedIDs)
+
+    this.setState((state) => {
+      const { selectedMessages } = state
+      selectedMessages.clear()
+
+    return {
+      selectedMessages
+    }
+    })
+   
+    this.loadMessages()
+  }
+
+
   /* 
   
   Toggle Starred/Favorite State of Single Message
@@ -165,6 +188,8 @@ class App extends Component {
           unreadCounter={unreadCounter}
           allReadToolbar={this.allReadToolbar}
           allUnreadToolbar={this.allUnreadToolbar}
+          deleteMessagesToolbar={this.deleteMessagesToolbar}
+
         />
         {this.state.compose ? <Compose openComposeMessage={this.openComposeMessage} composeMessage={this.composeMessage} closeComposeMessage={this.closeComposeMessage} /> : null}
         <MessageList
