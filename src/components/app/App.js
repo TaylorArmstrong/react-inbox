@@ -13,20 +13,8 @@ class App extends Component {
     super()
     this.state = {
       selectedMessages: new Set(),
-      isComposing: false,
   }
     this.API = `${process.env.REACT_APP_API_URL}/messages`
-    // The following is loaded in componentDidMount
-    // messages: [ {
-    //  {
-    //     "body": "random text",
-    //     "id": num,
-    //     "labels": [],
-    //     "read": true,
-    //     "starred": true,
-    //     "subject": "random text"
-    //  },
-    //  {...} ]
   }
   
 
@@ -117,6 +105,7 @@ class App extends Component {
       else selectedMessages.add(id)
 
       // update state
+      
       return {
         selectedMessages,
       }
@@ -154,7 +143,7 @@ class App extends Component {
 
   render() {
     const { messages, selectedMessages } = this.state
-
+    console.log('selectedMessages: app.js', selectedMessages)
     let unreadCounter = 0
     if (messages) {
       unreadCounter = messages.reduce((a, b) => {

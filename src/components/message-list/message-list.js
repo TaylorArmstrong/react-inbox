@@ -9,9 +9,9 @@ export default class Messages extends React.Component {
         super(props)
 
         // state to track which messages have been selected (checkbox)
-        this.state = {
-            setSelectedMessages: new Set(),
-        }
+        // this.state = {
+        //     selectedMessages: new Set(),
+        // }
     }
 
 

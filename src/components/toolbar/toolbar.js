@@ -2,7 +2,12 @@ import React, { Component } from 'react'
 
 
 class Toolbar extends Component {
-
+    // constructor (props) {
+    //     super(props)
+    //     this.state ={
+    //         ...this.state,
+    //     }
+    // } 
     openCompose = (ev) => {
         this.props.openComposeMessage()
     }
@@ -21,12 +26,24 @@ class Toolbar extends Component {
     // markAsRead = (ev) => this.props.allReadToolbar()
     // markAsUnread = (ev) => this.props.allUnreadToolbar()
 
-    // totalUnread = this.props.messages.filter(message => !message.read).length
+    
     // selectedCount = this.props.messages.filter(message => message.selected).length
 
     render() {
+        
+        const { selectedMessages, unreadCounter, totalMessages } = this.props
+        
+        console.log('selecteMessages: toolbar', selectedMessages)
+        let selectAllButtonDisplay = null
+        if (!selectedMessages.size) { 
+            selectAllButtonDisplay = 'far fa-square'
+        } else if (selectedMessages.size === totalMessages) {
+            selectAllButtonDisplay = 'far fa-check-square'
+        } else {
+            selectAllButtonDisplay = 'far fa-minus-square'
 
-        const { selecteMessages, unreadCounter } = this.props
+        }
+
         return (
             <div className="row toolbar">
                 <div className="col-md-12">
@@ -38,7 +55,7 @@ class Toolbar extends Component {
                         <i className="fa fa-plus" />
                     </button>
                     <button className="btn btn-default" >
-                        <i className="fa fa-check-square-o"></i>
+                        <i className={selectAllButtonDisplay}></i>
                     </button>
                     <button className="btn btn-default" >
                         Mark As Read
