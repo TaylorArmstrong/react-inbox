@@ -11,7 +11,7 @@ export default class Messages extends React.Component {
 
     render() {
 
-        const { messages, toggleFavorite, toggleSelected, selectedMessages } = this.props
+        const { messages, toggleFavorite, toggleSelected, selectedMessages, readMessage } = this.props
 
         if (!messages) {
             return (
@@ -30,6 +30,7 @@ export default class Messages extends React.Component {
                         selected={selectedMessages.has(message.id)}
                         toggleSelected={toggleSelected}
                         toggleFavorite={toggleFavorite}
+                        readMessage={readMessage}
                     />))}
             </div>
         )
